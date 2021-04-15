@@ -63,9 +63,14 @@ export const ButtonBase = styled.button`
         `
       }
     }
+    if (variant === 'naked') {
+      return `
+        background: none;
+        border: none;
+        min-width: unset;
+        padding: ${({ theme }) =>
+          `${2 * theme.spacing.unit}px ${2 * theme.spacing.unit}px`};
+      `
+    }
   }}
-
-  &:hover {
-    transform: translateY(-3px);
-  }
 `

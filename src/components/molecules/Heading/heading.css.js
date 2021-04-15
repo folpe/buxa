@@ -1,16 +1,18 @@
 import styled from '@emotion/styled'
 
-export const HeadingBase = styled.h2`
+export const HeadingBase = styled.div``
+
+export const HeadingText = styled.h2`
   color: ${({ color }) => color}
     ${({ variant }) => {
       if (variant === 'underlined') {
         return `
-        text-transform: uppercase;
-        flex-direction: column;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      `
+      text-transform: uppercase;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `
       }
     }};
 `

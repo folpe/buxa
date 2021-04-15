@@ -12,9 +12,6 @@ import store from './store'
 
 import SimpleTemplate from '@@components/templates/SimpleTemplate'
 import Home from '@@pages/Home'
-import About from '@@pages/About'
-import Team from '@@pages/Team'
-import Services from '@@pages/Services'
 
 const GlobalStyles = () => {
   const theme = useTheme()
@@ -26,14 +23,10 @@ const App = () => (
     <ThemeProvider theme={appTheme}>
       <GlobalStyles />
       <Router>
-        <SimpleTemplate>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/about" component={About} />
-            <Route path="/team" component={Team} />
-            <Route path="/services" component={Services} />
-          </Switch>
-        </SimpleTemplate>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/" component={SimpleTemplate} />
+        </Switch>
       </Router>
     </ThemeProvider>
   </Provider>

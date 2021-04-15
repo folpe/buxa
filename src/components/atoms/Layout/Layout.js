@@ -11,6 +11,7 @@ const Layout = ({
   wrap,
   children,
   as,
+  forwardRef,
   ...props
 }) => {
   return (
@@ -20,6 +21,7 @@ const Layout = ({
       justifyContent={justifyContent}
       flexDirection={flexDirection}
       wrap={wrap}
+      ref={forwardRef}
       {...props}
     >
       {children}
@@ -34,6 +36,7 @@ Layout.propTypes = {
   wrap: string,
   as: oneOfType([string, any]),
   children: node.isRequired,
+  forwardRef: any,
 }
 
 export default hot(Layout)

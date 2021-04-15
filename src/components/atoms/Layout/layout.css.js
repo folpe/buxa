@@ -7,5 +7,6 @@ export const LayoutBase = styled.div`
     align-items: ${alignItems};
     justify-content: ${justifyContent};
     flex-wrap: ${wrap};
+    flex: 1;
   `}
 `

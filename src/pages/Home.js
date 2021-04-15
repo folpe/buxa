@@ -1,128 +1,110 @@
-import React from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { hot } from 'react-hot-loader/root'
-
-import { Typo, Layout, LayoutItem, Heading, Icon, Card } from '@@components'
-
 import styled from '@emotion/styled'
+import { useHistory } from 'react-router'
 
-import { useTheme } from 'emotion-theming'
+import { Typo, Button, Heading, Layout, Media } from '@@components'
 
-const SectionHome = styled.section`
-  margin-top: 48px;
-`
+import login from '@@assets/images/login.svg'
+import { useGsapTl } from '@@helpers/gsap'
+import { Power3 } from 'gsap'
 
-const SectionHead = styled.section`
-  margin-top: 48px;
+const HomeContainer = styled.div`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #fff;
+  .home_media {
+    opacity: 0;
+  }
+  .home_connection {
+    transform: translate(100vw, 0px);
+    opacity: 0;
+    background-image: -webkit-linear-gradient(
+      -10deg,
+      #fff 20%,
+      rgba(81, 45, 168, 0.9) 20.1%
+    );
+    flex: 0 0 60%;
+  }
 `
 
 const Home = () => {
-  const theme = useTheme()
+  const history = useHistory()
 
-  const StarIcon = (
-    <Icon
-      icon="star"
-      viewBox="0 0 511.997 511.997"
-      width={32}
-      fill={theme.palette.secondary.main}
-    />
+  const navigateTo = useCallback(
+    (url) => {
+      history.push(url)
+    },
+    [history]
   )
 
-  const MonitorIcon = (
-    <Icon
-      icon="monitor"
-      viewBox="0 0 511.997 511.997"
-      width={32}
-      fill={theme.palette.secondary.main}
-    />
+  const loginOptions = useMemo(
+    () => ({
+      x: '5vw',
+      opacity: 1,
+      delay: 0.2,
+      duration: 1.2,
+      ease: 'elastic.out(1,1)',
+      onReverseComplete: () => navigateTo('/dash'),
+    }),
+    [navigateTo]
+  )
+  const mediaOptions = useMemo(
+    () => ({
+      opacity: 1,
+      duration: 1,
+      ease: Power3.in,
+    }),
+    []
   )
 
-  const IdeaIcon = (
-    <Icon
-      icon="idea"
-      viewBox="0 0 511.997 511.997"
-      width={32}
-      fill={theme.palette.secondary.main}
-    />
-  )
+  const [loginRef, loginTl] = useGsapTl(loginOptions)
+  const [mediaRef, mediaTl] = useGsapTl(mediaOptions)
+
+  useEffect(() => {
+    loginTl.play()
+    mediaTl.play()
+  }, [loginTl, mediaTl])
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+    loginTl.reverse()
+    mediaTl.reverse()
+  }
 
   return (
-    <>
-      <Layout as={SectionHead} flexDirection="column">
-        <Heading variant="underlined" title="Welcome" />
-        <Typo center>
-          Start craft digital, graphic and dimensional thinking, to create
-          category leading brand experiences that have meaning and add a value
-          for your clients.
-        </Typo>
+    <HomeContainer>
+      <Layout
+        alignItems="center"
+        justifyContent="center"
+        className="home_media"
+        forwardRef={mediaRef}
+      >
+        <Media src={login} alt="login" />
       </Layout>
-      <Layout as={SectionHome} justifyContent="space-between" wrap="wrap">
-        <LayoutItem division={3}>
-          <Card
-            icon={StarIcon}
-            title="Star-Lord"
-            body={
-              <Typo>
-                The Federales found a room full of bodies. Looks like a bunch of
-                cartel guys.
-              </Typo>
-            }
-          />
-        </LayoutItem>
-        <LayoutItem division={3}>
-          <Card
-            icon={MonitorIcon}
-            title="Iron Man"
-            body={
-              <Typo>
-                {`Why would, why would I be scared of that guy? Anyone else here
-                killed that guy? Nope.`}
-              </Typo>
-            }
-          />
-        </LayoutItem>
-        <LayoutItem division={3}>
-          <Card
-            icon={IdeaIcon}
-            title="Mantis"
-            body={
-              <Typo>{`Didn't think so. Korg, why don't you, tell everybody who chopped
-                Thanos' big head off.`}</Typo>
-            }
-          />
-        </LayoutItem>
+      <Layout
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        className="home_connection"
+        forwardRef={loginRef}
+      >
+        <Heading as="h1" title="Login"></Heading>
+        <Typo>Scannez votre badge</Typo>
+        <Typo>OU</Typo>
+        <Typo>Connectez-vous</Typo>
+        <form onSubmit={onSubmit}>
+          <input type="text" placeholder="Login" />
+          <input type="password" placeholder="Mot de passe" />
 
-        <LayoutItem division={3}>
-          <Card
-            icon={MonitorIcon}
-            title="Ant Man"
-            body={
-              <Typo>
-                We just, wait around for this Quill guy to show up, and then he
-                leads us to the Power Stone, is that it?
-              </Typo>
-            }
-          />
-        </LayoutItem>
-        <LayoutItem division={3}>
-          <Card
-            icon={IdeaIcon}
-            title="Doctor Strange"
-            body={
-              <Typo>{`If it wasn't for the existential terror of staring into a void of space, I'd say I'm feeling better today`}</Typo>
-            }
-          />
-        </LayoutItem>
-        <LayoutItem division={3}>
-          <Card
-            icon={StarIcon}
-            title="Thanos"
-            body={
-              <Typo>{`The infection's run its course, Thanks to the blue meanie back there. World governments are in pieces.`}</Typo>
-            }
-          />
-        </LayoutItem>
+          <Button type="submit" color="primary">
+            Valider
+          </Button>
+        </form>
       </Layout>
-    </>
+    </HomeContainer>
   )
 }
 

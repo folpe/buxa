@@ -1,18 +1,27 @@
 import { node, oneOf, string } from '@@helpers/prop-types'
+import { any } from 'prop-types'
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
 
-import { HeadingBase, Underline, IconWrapper } from './heading.css'
+import { HeadingText, Underline, IconWrapper } from './heading.css'
 
-const Heading = ({ title, as = 'h2', variant, color, icon, ...props }) => {
+const Heading = ({
+  title,
+  as = 'h2',
+  variant,
+  color,
+  icon,
+  forwardRef,
+  ...props
+}) => {
   return (
-    <>
+    <div ref={forwardRef}>
       {icon && <IconWrapper>{icon}</IconWrapper>}
-      <HeadingBase as={as} variant={variant} color={color} {...props}>
+      <HeadingText as={as} variant={variant} color={color} {...props}>
         {title}
-      </HeadingBase>
+      </HeadingText>
       {variant === 'underlined' && <Underline />}
-    </>
+    </div>
   )
 }
 
@@ -22,6 +31,7 @@ Heading.propTypes = {
   variant: oneOf(['underlined']),
   color: string,
   icon: node,
+  forwardRef: any,
 }
 
 export default hot(Heading)

@@ -1,63 +1,40 @@
 import React from 'react'
 import { hot } from 'react-hot-loader/root'
 
-import { Link } from 'react-router-dom'
-import { HeaderBase, Navigation, Logo } from './header.css'
-import { ListItem, Media, Wrapper, List, Heading, Layout } from '@@components'
+import { HeaderBase } from './header.css'
+import { Button, Icon, Layout, Typo } from '@@components'
+import { any, func } from '@@helpers/prop-types'
 
-const menu = [
-  { id: 'home', text: 'Home', link: '/' },
-  { id: 'services', text: 'Services', link: '/services' },
-  { id: 'team', text: 'Team', link: '/team' },
-  { id: 'about', text: 'About', link: '/about' },
-]
+import { user } from '@@services/mocks/user'
 
-const Header = () => {
+const Header = ({ forwardRef, disconnectCB }) => {
+  const clickHandler = () => {
+    disconnectCB()
+  }
+
+  const { firstname, lastname } = user
+
   return (
-    <HeaderBase>
-      <Wrapper className="u-fullHeight">
-        <Layout
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          className="u-fullHeight"
-        >
-          <Layout as={Navigation} alignItems="center" justifyContent="center">
-            <Logo>
-              <Media src="src/assets/images/logo.png" alt="Logo"></Media>
-            </Logo>
-            <List>
-              {menu.map((item) => (
-                <ListItem
-                  key={item.id}
-                  component={Link}
-                  to={item.link}
-                  inline
-                  className="darkMode"
-                >
-                  {item.text}
-                </ListItem>
-              ))}
-            </List>
-          </Layout>
-          <Layout
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            className="u-fullHeight"
-          >
-            <Heading as="h1" title="Start building a new world with React" />
-            <Heading
-              as="h5"
-              className="subtitle"
-              color={`rgba(255,255,255,0.4)`}
-              title="Lorem ipsum dolor sit amet"
-            />
-          </Layout>
-        </Layout>
-      </Wrapper>
+    <HeaderBase ref={forwardRef}>
+      <Layout
+        alignItems="center"
+        justifyContent="flex-end"
+        className="u-fullHeight"
+      >
+        <Typo className="header_user">
+          {firstname} {lastname}
+        </Typo>
+        <Button variant="naked" onClick={clickHandler} className="header_logo">
+          <Icon icon="power" fill="white" viewBox="0 0 24 24"></Icon>
+        </Button>
+      </Layout>
     </HeaderBase>
   )
+}
+
+Header.propTypes = {
+  forwardRef: any,
+  disconnectCB: func,
 }
 
 export default hot(Header)
